@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nexora"
+version = "1.0.0"
+description = "A modular, local-first Python runtime: events, plugins, state, adaptive interfaces, memory, timeline rewind, observability, screen perception, procedural worlds, and sandboxed agents."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Teja Priyan", email = "teja1616150@gmail.com" }, { name = "NEXORA Contributors" }]
+keywords = ["runtime", "events", "plugins", "local-first", "privacy", "agents", "observability"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+]
+# The base install is intentionally dependency-free (stdlib only).
+dependencies = []
+
+[project.optional-dependencies]
+ghost = ["rich>=13.0"]
+world = ["pygame>=2.5"]
+vision = ["pillow>=10.0", "mss>=9.0"]
+ai = ["numpy>=1.24"]
+dev = ["pytest>=7.4", "pytest-cov>=4.1"]
+all = ["rich>=13.0", "pygame>=2.5", "pillow>=10.0", "mss>=9.0", "numpy>=1.24"]
+
+[project.scripts]
+nexora = "nexora.cli.main:main"
+
+[project.urls]
+Homepage = "https://github.com/TejaPriyan/Nexora"
+Documentation = "https://github.com/TejaPriyan/Nexora/tree/main/docs"
+Repository = "https://github.com/TejaPriyan/Nexora.git"
+Issues = "https://github.com/TejaPriyan/Nexora/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+nexora = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
