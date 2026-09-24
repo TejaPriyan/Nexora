@@ -3,6 +3,12 @@
 All notable changes to this project are documented here. Format loosely
 follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.0.1] -- CLI Feature Demos & Readiness Check
+
+- Added direct CLI shortcuts: `nexora ghost`, `nexora world`, `nexora agentbox`, etc.
+- Added `nexora demo [feature]` command to run live demonstrations from the terminal.
+- Updated `nexora doctor` to show `[ready]` status for all implemented modules.
+
 ## [1.0.0] -- Complete NEXORA Platform Release
 
 The complete NEXORA runtime platform is now fully delivered across all 10 milestones.

@@ -34,3 +34,12 @@ def test_init_refuses_overwrite_without_force(tmp_path, capsys):
     args.func(args)
     args2 = parser.parse_args(["init", str(target)])
     assert args2.func(args2) == 1
+
+
+def test_demo_and_feature_shortcuts(capsys):
+    parser = build_parser()
+    for feat in ["ghost", "world", "agentbox"]:
+        args = parser.parse_args([feat])
+        assert args.func(args) == 0
+        out = capsys.readouterr().out
+        assert len(out) > 0

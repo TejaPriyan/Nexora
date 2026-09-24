@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "nexora-py"
-version = "1.0.0"
+version = "1.0.1"
 description = "A modular, local-first Python runtime: events, plugins, state, adaptive interfaces, memory, timeline rewind, observability, screen perception, procedural worlds, and sandboxed agents."
 readme = "README.md"
 requires-python = ">=3.9"
