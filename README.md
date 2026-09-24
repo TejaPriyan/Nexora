@@ -27,19 +27,21 @@ one CLI.
 ## Install
 
 ```bash
-pip install nexora
+pip install nexora-py
 ```
 
 The base install is dependency-free (Python stdlib only). Feature modules
 pull in extras as needed, e.g.:
 
 ```bash
-pip install nexora[ghost]    # rich (GhostUI automatic terminal interfaces)
-pip install nexora[world]    # pygame (CodeWorld 2D entity visualization)
-pip install nexora[vision]   # pillow + mss, once ScreenMind lands
-pip install nexora[ai]       # numpy, for future modules that need it
-pip install nexora[all]      # everything above
+pip install nexora-py[ghost]    # rich (GhostUI automatic terminal interfaces)
+pip install nexora-py[world]    # pygame (CodeWorld 2D entity visualization)
+pip install nexora-py[vision]   # pillow + mss (ScreenMind screen perception)
+pip install nexora-py[ai]       # numpy, for numerical operations
+pip install nexora-py[all]      # everything above
 ```
+
+*(Note: The package installs as `nexora-py`, and is imported in Python directly as `nexora`, e.g. `import nexora` or `from nexora import App`.)*
 
 ## Quickstart
 
