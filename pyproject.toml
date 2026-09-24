@@ -8,13 +8,12 @@ version = "1.0.0"
 description = "A modular, local-first Python runtime: events, plugins, state, adaptive interfaces, memory, timeline rewind, observability, screen perception, procedural worlds, and sandboxed agents."
 readme = "README.md"
 requires-python = ">=3.9"
-license = { text = "MIT" }
+license = "MIT"
 authors = [{ name = "Teja Priyan", email = "teja1616150@gmail.com" }, { name = "NEXORA Contributors" }]
 keywords = ["runtime", "events", "plugins", "local-first", "privacy", "agents", "observability"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
