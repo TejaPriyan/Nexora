@@ -22,15 +22,18 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Topic :: Software Development :: Libraries :: Application Frameworks",
 ]
-# The base install is intentionally dependency-free (stdlib only).
-dependencies = []
+# The base install is intentionally dependency-free (stdlib only),
+# except tomli which backfills tomllib on Python 3.9 / 3.10.
+dependencies = [
+    "tomli>=2.0; python_version < '3.11'",
+]
 
 [project.optional-dependencies]
 ghost = ["rich>=13.0"]
 world = ["pygame>=2.5"]
 vision = ["pillow>=10.0", "mss>=9.0"]
 ai = ["numpy>=1.24"]
-dev = ["pytest>=7.4", "pytest-cov>=4.1"]
+dev = ["pytest>=7.4", "pytest-cov>=4.1", "tomli>=2.0"]
 all = ["rich>=13.0", "pygame>=2.5", "pillow>=10.0", "mss>=9.0", "numpy>=1.24"]
 
 [project.scripts]

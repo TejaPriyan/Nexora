@@ -15,8 +15,11 @@ from typing import Any, Dict, Optional
 
 try:  # Python 3.11+
     import tomllib  # type: ignore
-except ModuleNotFoundError:  # pragma: no cover
-    tomllib = None  # type: ignore
+except ModuleNotFoundError:
+    try:  # backport for Python 3.9 / 3.10
+        import tomli as tomllib  # type: ignore
+    except ModuleNotFoundError:  # pragma: no cover
+        tomllib = None  # type: ignore
 
 
 @dataclass
