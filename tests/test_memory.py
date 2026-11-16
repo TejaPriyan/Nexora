@@ -179,3 +179,20 @@ class TestMemoryPlugin:
         assert app.memory.get("task_checkpoint") is not None
         assert app.world.get("task_node") is not None
         assert "integrated_task" in app.ghost.task_records
+
+    def test_nested_list_and_default_key_id_redaction(self, temp_store):
+        payload = {
+            "entries": [{"apikey": "secret-a"}, ("ok", {"session_id": "sess-99"})],
+            "public": "visible",
+        }
+        item = temp_store.remember("apikey=secret-raw, service=recall", payload)
+        assert "secret-raw" not in item.id
+        assert "secret-raw" not in item.content
+        assert item.value["entries"][0]["apikey"] == "***REDACTED***"
+        assert item.value["entries"][1][1]["session_id"] == "***REDACTED***"
+        assert item.value["public"] == "visible"
+
+    def test_memory_type_hints_resolve(self):
+        import typing
+        hints = typing.get_type_hints(MemoryStore.search)
+        assert "return" in hints

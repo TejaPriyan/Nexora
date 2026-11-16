@@ -227,3 +227,22 @@ def test_coexistence_with_all_prior_modules():
     assert app.agentbox is not None
 
     app.run()
+
+
+def test_hanging_tool_times_out_promptly():
+    import threading
+    release = threading.Event()
+    limits = AgentExecutionLimits(timeout_seconds=0.05)
+    app = App(features=["agentbox"])
+    app.agentbox.register_tool("hang", lambda: release.wait(timeout=2.0), allow_by_default=True)
+    app.permissions.grant("agentbox.tool.hang")
+    sb = app.agentbox.create_sandbox(allowed_tools={"hang"}, limits=limits)
+
+    start = time.perf_counter()
+    try:
+        with pytest.raises(AgentTimeoutError, match="timed out"):
+            sb.execute_tool("hang")
+        elapsed = time.perf_counter() - start
+        assert elapsed < 0.6
+    finally:
+        release.set()

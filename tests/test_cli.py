@@ -38,8 +38,32 @@ def test_init_refuses_overwrite_without_force(tmp_path, capsys):
 
 def test_demo_and_feature_shortcuts(capsys):
     parser = build_parser()
-    for feat in ["ghost", "world", "agentbox"]:
+    for feat in [
+        "ghost",
+        "world",
+        "adaptive",
+        "memory",
+        "timeline",
+        "shadow",
+        "vision",
+        "worldforge",
+        "agentbox",
+    ]:
         args = parser.parse_args([feat])
         assert args.func(args) == 0
         out = capsys.readouterr().out
         assert len(out) > 0
+
+        demo_args = parser.parse_args(["demo", feat])
+        assert demo_args.func(demo_args) == 0
+        demo_out = capsys.readouterr().out
+        assert len(demo_out) > 0
+
+
+def test_demo_showcase_command(capsys):
+    parser = build_parser()
+    for cli_args in (["demo"], ["demo", "showcase"]):
+        args = parser.parse_args(cli_args)
+        assert args.func(args) == 0
+        out = capsys.readouterr().out
+        assert "SHOWCASE COMPLETE" in out

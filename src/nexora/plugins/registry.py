@@ -1,9 +1,9 @@
 """Maps feature names (as passed to ``App(features=[...])``) to Plugin
 classes.
 
-As each module milestone lands, its entry here points at a real
-implementation instead of ``PlannedPlugin`` -- callers do not need to
-change their code.  Currently implemented: ``ghost`` (M1), ``world`` (M2).
+All nine built-in feature modules (``ghost``, ``world``, ``adaptive``,
+``memory``, ``timeline``, ``shadow``, ``vision``, ``worldforge``, and
+``agentbox``) are registered here and resolve cleanly on demand.
 """
 
 from __future__ import annotations

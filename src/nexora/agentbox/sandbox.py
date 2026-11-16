@@ -147,10 +147,11 @@ class Sandbox:
 
         # 4. Timed execution
         timeout = self.limits.timeout_seconds
+        executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+        future = executor.submit(tool.func, **kwargs)
         try:
-            with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
-                future = executor.submit(tool.func, **kwargs)
-                result = future.result(timeout=timeout)
+            result = future.result(timeout=timeout)
+            executor.shutdown(wait=True)
 
             duration = time.perf_counter() - start_t
             with self._lock:
@@ -160,6 +161,8 @@ class Sandbox:
                 self._audit_trail.append(record)
             return result
         except concurrent.futures.TimeoutError:
+            future.cancel()
+            executor.shutdown(wait=False, cancel_futures=True)
             duration = time.perf_counter() - start_t
             with self._lock:
                 record.status = "timeout"
@@ -168,6 +171,7 @@ class Sandbox:
                 self._audit_trail.append(record)
             raise AgentTimeoutError(record.error)
         except Exception as exc:
+            executor.shutdown(wait=False, cancel_futures=True)
             duration = time.perf_counter() - start_t
             with self._lock:
                 record.status = "error"

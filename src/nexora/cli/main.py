@@ -136,15 +136,22 @@ def cmd_demo(args: argparse.Namespace) -> int:
         return 0
 
     elif feature == "vision":
-        from PIL import Image
         from ..app import App
-        from ..vision import ScreenImage
         app = App(features=["vision"])
         app.vision.grant_all("CLI demo")
-        app.vision.engine.set_capture_backend(lambda r: ScreenImage(Image.new("RGB", (100, 100), (255, 255, 255))))
-        img = app.vision.screenshot()
-        print("\n=== NEXORA ScreenMind Vision ===")
-        print(f"  * Permissioned capture: {img.width}x{img.height} pixels")
+        try:
+            from PIL import Image
+            from ..vision import ScreenImage
+
+            app.vision.engine.set_capture_backend(
+                lambda r: ScreenImage(Image.new("RGB", (100, 100), (255, 255, 255)))
+            )
+            img = app.vision.screenshot()
+            print("\n=== NEXORA ScreenMind Vision ===")
+            print(f"  * Permissioned capture: {img.width}x{img.height} pixels")
+        except ImportError:
+            print("\n=== NEXORA ScreenMind Vision ===")
+            print("  * Permission gate verified (install nexora-py[vision] for image capture)")
         return 0
 
     elif feature == "worldforge":
@@ -171,7 +178,7 @@ def cmd_demo(args: argparse.Namespace) -> int:
 
     else:
         print("\nRunning NEXORA Showcase...")
-        from ...examples.showcase_all import run_showcase
+        from .showcase import run_showcase
         run_showcase()
         return 0
 

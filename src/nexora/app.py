@@ -24,11 +24,9 @@ class _Task:
 class App:
     """The main NEXORA application object.
 
-    ``App(features=[...])`` declares which optional modules should be
-    attached. Only ``nexora`` core ships in this milestone; feature modules
-    are registered as plugins (see ``nexora.plugins``) and today report an
-    honest "not implemented yet" error the moment you actually try to use
-    one, rather than silently doing nothing or faking behavior.
+    ``App(features=[...])`` declares which optional plugin modules should be
+    attached (see ``nexora.plugins``). Unknown feature names raise
+    ``UnknownFeatureError`` immediately on registration.
     """
 
     def __init__(

@@ -42,13 +42,21 @@ class SecretRedactor:
         lowered = key.lower()
         return lowered in self._extra or bool(_SENSITIVE_PATTERN.search(lowered))
 
+    def redact_value(self, value: Any) -> Any:
+        """Recursively redact sensitive keys inside nested dicts, lists, and tuples."""
+        if isinstance(value, dict):
+            return self.redact(value)
+        if isinstance(value, list):
+            return [self.redact_value(item) for item in value]
+        if isinstance(value, tuple):
+            return tuple(self.redact_value(item) for item in value)
+        return value
+
     def redact(self, data: Dict[str, Any]) -> Dict[str, Any]:
         result: Dict[str, Any] = {}
         for key, value in data.items():
             if self.is_sensitive(key):
                 result[key] = REDACTED
-            elif isinstance(value, dict):
-                result[key] = self.redact(value)
             else:
-                result[key] = value
+                result[key] = self.redact_value(value)
         return result

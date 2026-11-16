@@ -126,12 +126,11 @@ app.memory.remember("server_config", {"port": 8080})
 app.ghost.log("App initialized with memory & shadow observability.")
 ```
 
-If an app requests a planned or unregistered feature that is not available, NEXORA raises a clear `NotImplementedError` rather than silently failing:
+If an app requests an unregistered feature that is not available, NEXORA raises a clear `UnknownFeatureError` rather than silently failing:
 
 ```python
 app = App(features=["unbuilt_custom_plugin"])
-app.run()
-# NotImplementedError: NEXORA feature 'unbuilt_custom_plugin' is not registered...
+# UnknownFeatureError: Unknown NEXORA feature 'unbuilt_custom_plugin'...
 ```
 
 See [docs/ROADMAP.md](docs/ROADMAP.md) for the complete roadmap and

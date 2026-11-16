@@ -5,9 +5,10 @@ from __future__ import annotations
 import re
 import threading
 import time
-from typing import Any, Dict, List, Optional, Sequence
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from ..security import SecretRedactor
+from ..security.redact import DEFAULT_SENSITIVE_KEYS, REDACTED
 from ..storage import LocalStore
 from .models import MemoryItem
 
@@ -61,12 +62,8 @@ class MemoryStore:
             t = now if now is not None else time.time()
             clean_tags = [str(tag).lower() for tag in (tags or [])]
 
-            # Redact dictionary fields
-            clean_value = (
-                self._redactor.redact(value)
-                if isinstance(value, dict)
-                else value
-            )
+            # Redact structured values recursively
+            clean_value = self._redactor.redact_value(value)
             clean_meta = (
                 self._redactor.redact(metadata)
                 if isinstance(metadata, dict)
@@ -75,15 +72,13 @@ class MemoryStore:
 
             # Redact string content if it matches sensitive patterns
             content_str = str(key_or_content)
-            for sensitive_key in self._redactor._extra | {
-                "password", "secret", "token", "api_key", "credential", "private_key"
-            }:
+            for sensitive_key in self._redactor._extra | DEFAULT_SENSITIVE_KEYS:
                 # Pattern matches key=value or key: value
                 pattern = rf"(?i)\b({re.escape(sensitive_key)})\s*[:=]\s*([^\s,]+)"
-                content_str = re.sub(pattern, rf"\1: ***REDACTED***", content_str)
+                content_str = re.sub(pattern, rf"\1: {REDACTED}", content_str)
 
-            # Formulate unique ID
-            item_id = str(key_or_content)
+            # Persist the redacted key/content as ID so raw secrets never hit SQLite PKs
+            item_id = content_str
 
             item = MemoryItem(
                 id=item_id,

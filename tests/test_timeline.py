@@ -189,3 +189,10 @@ class TestTimelinePlugin:
         assert len(app.timeline.history()) >= 1
         assert app.memory.get("last_status") is not None
         assert app.world.get("srv_task") is not None
+
+    def test_type_hints_resolve_without_name_error(self):
+        import typing
+        resolve_hints = typing.get_type_hints(TimeLoopEngine._resolve_data)
+        diff_hints = typing.get_type_hints(TimeLoopEngine.diff)
+        assert "return" in resolve_hints
+        assert "return" in diff_hints
